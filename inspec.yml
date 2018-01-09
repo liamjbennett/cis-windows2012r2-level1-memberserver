@@ -1,0 +1,10 @@
+name: cis-windows2012r2-level1-memberserver
+title: CIS Level 1 Security Baseline for Windows 2012R2
+maintainer: Claranet
+copyright: Claranet Ltd
+copyright_email: infra@claranet.uk
+license: MIT
+summary: An InSpec Compliance Profile for CIS Windows 2012R2 covering L1 member servers.
+version: 0.1.0
+supports:
+  - os-family: windows
