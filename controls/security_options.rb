@@ -431,16 +431,16 @@ control 'cis-network-access-remote-registry-subpaths-2.3.10.8' do
   desc 'Network access: Remotely accessible registry paths and sub-paths'
   
   $paths = [
-    'System\CurrentControlSet\Control\Print\Printers'
-    'System\CurrentControlSet\Services\Eventlog'
-    'Software\Microsoft\OLAP Server'
-    'Software\Microsoft\Windows NT\CurrentVersion\Print'
-    'Software\Microsoft\Windows NT\CurrentVersion\Windows'
-    'System\CurrentControlSet\Control\ContentIndex'
-    'System\CurrentControlSet\Control\Terminal Server'
-    'System\CurrentControlSet\Control\Terminal Server\UserConfig'
-    'System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration'
-    'Software\Microsoft\Windows NT\CurrentVersion\Perflib'
+    'System\CurrentControlSet\Control\Print\Printers',
+    'System\CurrentControlSet\Services\Eventlog',
+    'Software\Microsoft\OLAP Server',
+    'Software\Microsoft\Windows NT\CurrentVersion\Print',
+    'Software\Microsoft\Windows NT\CurrentVersion\Windows',
+    'System\CurrentControlSet\Control\ContentIndex',
+    'System\CurrentControlSet\Control\Terminal Server',
+    'System\CurrentControlSet\Control\Terminal Server\UserConfig',
+    'System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration',
+    'Software\Microsoft\Windows NT\CurrentVersion\Perflib',
     'System\CurrentControlSet\Services\SysmonLog'
   ]
 
