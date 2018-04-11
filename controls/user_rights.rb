@@ -41,19 +41,6 @@ control 'cis-act-as-os-2.2.3' do
   end
 end
 
-control 'cis-add-workstations-2.2.4' do
-  impact 0.7
-  title '2.2.4 Set Add workstations to domain to Administrators'
-  desc 'Set Add workstations to domain to Administrators'
-
-  tag cis: ['windows_2012r2:2.2.4']
-  ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
-
-  describe security_policy do
-    its('SeMachineAccountPrivilege') { should eq ['S-1-5-32-544'] }
-  end
-end
-
 control 'cis-adjust-memory-quotas-2.2.5' do
   impact 0.7
   title '2.2.5 Set Adust memory quotas for a process to Administrators, LOCAL SERVICE, NETWORK SERVICE'
