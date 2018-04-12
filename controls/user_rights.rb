@@ -11,7 +11,7 @@ control 'cis-access-cred-manager-2.2.1' do
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
   describe security_policy do
-    its('SeTrustedCredManAccessPrivilege') { should eq ['S-1-0-0'] }
+    its('SeTrustedCredManAccessPrivilege') { should eq [] }
   end
 end
 
@@ -24,7 +24,7 @@ control 'cis-network-access-2.2.2' do
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
   describe security_policy do
-    its('SeNetworkLogonRight') { should eq ['S-1-0-0'] }
+    its('SeNetworkLogonRight') { should eq [] }
   end
 end
 
@@ -37,7 +37,7 @@ control 'cis-act-as-os-2.2.3' do
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
   describe security_policy do
-    its('SeTcbPrivilege') { should eq ['S-1-0-0'] }
+    its('SeTcbPrivilege') { should eq [] }
   end
 end
 
@@ -144,7 +144,7 @@ control 'cis-allow-create-token-object-2.2.12' do
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
   describe security_policy do
-    its('SeCreateTokenPrivilege') { should eq ['S-1-0-0'] }
+    its('SeCreateTokenPrivilege') { should eq [] }
   end
 end
 
@@ -170,7 +170,7 @@ control 'cis-allow-create-shared-objects-2.2.14' do
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
   describe security_policy do
-    its('SeCreatePermanentPrivilege') { should eq ['S-1-0-0'] }
+    its('SeCreatePermanentPrivilege') { should eq [] }
   end
 end
 
@@ -274,7 +274,7 @@ control 'cis-enable-accounts-trusted-for-delegation-2.2.22' do
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
   describe security_policy do
-    its('SeEnableDelegationPrivilege') { should eq ['S-1-0-0'] }
+    its('SeEnableDelegationPrivilege') { should eq [] }
   end
 end
 
@@ -352,7 +352,7 @@ control 'cis-lock-pages-in-memory-noone-2.2.28' do
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
   describe security_policy do
-    its('SeLockMemoryPrivilege') { should eq ['S-1-0-0'] }
+    its('SeLockMemoryPrivilege') { should eq [] }
   end
 end
 
@@ -389,7 +389,7 @@ control 'cis-manage-object-label-noone-2.2.31' do
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
   
   describe security_policy do
-    its('SeRelabelPrivilege') { should eq ['S-1-0-0'] }
+    its('SeRelabelPrivilege') { should eq [] }
   end
 end
 
