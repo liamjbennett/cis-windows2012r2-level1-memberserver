@@ -176,7 +176,7 @@ end
 
 control 'cis-allow-create-symbolic-links-2.2.15' do
   impact 0.7
-  title '2.2.14 Ensure Create Symblic links is net to Administrators'
+  title '2.2.14 Ensure Create Symblic links is set to Administrators'
   desc 'Ensure Create Symblic links is net to Administrators'
 
   tag cis: ['windows_2012r2:2.2.15']
@@ -202,8 +202,8 @@ end
 
 control 'cis-deny-access-from-network-2.2.17' do
   impact 0.7
-  title '2.2.17 Deny access from to this compute from the network'
-  desc 'Deny access from to this compute from the network'
+  title '2.2.17 Deny access from to this computer from the network'
+  desc 'Deny access from to this computer from the network'
 
   tag cis: ['windows_2012r2:2.2.17']
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
@@ -356,6 +356,8 @@ control 'cis-lock-pages-in-memory-noone-2.2.28' do
   end
 end
 
+
+# DOMAIN POLICY - REMOVE?
 control 'cis-logon-as-batch-job-2.2.29' do
   impact 0.7
   title '2.2.29 Ensure Logon as batch job is set to Administrators'
@@ -441,7 +443,7 @@ control 'cis-profile-system-performance-2.2.35' do
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
   describe security_policy do
-    its('SeSystemProfilePrivilege') { should eq ['S-1-5-32-544','S-1-5-80-3139157870-2983391045-3678747466-658725712-1809340420'] }
+    its('SeSystemProfilePrivilege') { should eq ['S-1-5-32-544','NT SERVICE\WdiServiceHost'] }
   end
 end
 
