@@ -486,8 +486,6 @@ control 'cis-shutdown-the-system-2.2.38' do
   end  
 end
 
-# 2.2.39 - domain controller only
-
 control 'cis-take-ownership-of-files-2.2.40' do
   impact 0.7
   title '2.2.40 Ensure Take ownership of files or other objects is set to Administrators'
