@@ -443,7 +443,7 @@ control 'cis-profile-system-performance-2.2.35' do
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
   describe security_policy do
-    its('SeSystemProfilePrivilege') { should eq ['S-1-5-32-544','NT SERVICE\WdiServiceHost'] }
+    its('SeSystemProfilePrivilege') { should eq ['S-1-5-32-544','S-1-5-80-3139157870-2983391045-3678747466-658725712-1809340420'] }
   end
 end
 
@@ -491,7 +491,7 @@ control 'cis-take-ownership-of-files-2.2.40' do
   title '2.2.40 Ensure Take ownership of files or other objects is set to Administrators'
   desc 'Ensure Take ownership of files or other objects is set to Administrators'
 
-  tag cis: ['windows_2012r2:2.2.39']
+  tag cis: ['windows_2012r2:2.2.40']
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
   describe security_policy do
