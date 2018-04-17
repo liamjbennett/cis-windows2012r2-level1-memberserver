@@ -55,9 +55,20 @@ control 'cis-minimum-password-length-1.1.4' do
   end
 end
 
-#TODO: 1.1.5
+control 'cis-password-complexity-1.1.5' do
+  impact 0.7
+  title '1.1.5 Set Password complexity requirements to Enabled'
+  desc 'Set Password complexity requirements to Enabled'
 
-control 'cis-password-complexity-1.1.6' do
+  tag cis: ['windows_2012r2:1.1.5']
+  ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
+
+  describe security_policy do
+    its('PasswordComplexity') { should eq 1 }
+  end 
+end
+
+control 'cis-store-passwords-using-reversible-encryption-1.1.6' do
   impact 0.7
   title '1.1.6 Set Store passwords using reversible encryption to Disabled'
   desc 'Set Store passwords using reversible encryption to Disabled'
