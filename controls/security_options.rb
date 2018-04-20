@@ -9,7 +9,7 @@ control 'cis-admin-account-status-2.3.1.1' do
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
   describe security_policy do
-    its('Accounts: Administrator account status') { should eq 'Disabled' }
+    its('EnableAdminAccount') { should eq 0 }
   end
 end
 
@@ -29,7 +29,7 @@ control 'cis-accounts-guest-account-status-2.3.1.3' do
   desc 'Ensure Accounts: Guest account status is set to Disabled'
   
   describe security_policy do
-    its('Accounts: Guest account status') { should eq 'Disabled' }
+    its('EnableGuestAccount') { should eq 0 }
   end
 end
 
@@ -38,8 +38,8 @@ control 'cis-accounts-local-account-blank-passwords-2.3.1.4' do
   title '2.3.1.4 Ensure Accounts: Limit local account use of blank passwords to console logon only is set to Enabled'
   desc 'Ensure Accounts: Limit local account use of blank passwords to console logon only is set to Enabled'
   
-  describe security_policy do
-    its('Accounts: Limit local account use of blank passwords to console logon only') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Lsa') do
+    its('LimitBlankPasswordUse') { should eq 1 }
   end
 end
 
@@ -49,7 +49,7 @@ control 'cis-rename-administrator-account-2.3.1.5' do
   desc 'Configure Accounts: Rename administrator account'
   
   describe security_policy do
-    its('Accounts: Rename administrator account') { should_not eq 'Administrator' }
+    its('NewAdministratorName') { should_not eq 'Administrator' }
   end
 end
 
@@ -59,7 +59,7 @@ control 'cis-rename-guest-account-2.3.1.6' do
   desc 'Configure Accounts: Rename guest account'
 
   describe security_policy do
-    its('Accounts: Rename guest account') { should_not eq 'Guest' }
+    its('NewGuestName') { should_not eq 'Guest' }
   end
 end
 
@@ -68,8 +68,8 @@ control 'cis-audit-subcateogory-override-2.3.2.1' do
   title '2.3.2.1 Ensure Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy category settings is set to Enabled'
   desc 'Ensure Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy category settings is set to Enabled'
 
-  describe security_policy do
-    its('Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy category settings') { should eq 'Enabled' }
+  describe registry_key('HKLM\System\CurrentControlSet\Control\Lsa') do
+    its('SCENoApplyLegacyAuditPolicy') { should eq 1 }
   end
 end
 
@@ -78,8 +78,8 @@ control 'cis-shutdown-when-unable-to-log-audits-2.3.2.2' do
   title '2.3.2.2 Ensure Audit: Shut down system immediately if unable to log security audits is set to Disable'
   desc 'Ensure Audit: Shut down system immediately if unable to log security audits is set to Disable'
   
-  describe security_policy do
-    its('Audit: Shut down system immediately if unable to log security audits') { should eq 'Disabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Lsa') do
+    its('CrashOnAuditFail') { should eq 0 }
   end
 end
 
@@ -88,8 +88,8 @@ control 'cis-format-media-2.3.4.1' do
   title '2.3.4.1 Ensure Devices: Allowed to format and eject removable media is set to Administrators'
   desc 'Ensure Devices: Allowed to format and eject removable media is set to Administrators'
   
-  describe security_policy do
-    its('Devices: Allowed to format and eject removable media') { should eq 'Administrators' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon') do
+    its('AllocateDASD') { should eq '0' }
   end
 end
 
@@ -98,8 +98,8 @@ control 'cis-prevent-printer-drivers-2.3.4.2' do
   title '2.3.4.2 Ensure Devices: Prevent users from installing printer drivers is set to Enabled'
   desc 'Ensure Devices: Prevent users from installing printer drivers is set to Enabled'
   
-  describe security_policy do
-    its('Devices: Prevent users from installing printer drivers') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Print\Providers\LanMan Print Services\Servers') do
+    its('AddPrinterDrivers') { should eq 1 }
   end
 end
 
@@ -108,8 +108,8 @@ control 'cis-encrypt-sign-channel-data-always-2.3.6.1' do
   title '2.3.6.1 Ensure Domain member: Digitally encrypt or sign secure channel data (always) is set to Enabled'
   desc 'Ensure Domain member: Digitally encrypt or sign secure channel data (always) is set to Enabled'
   
-  describe security_policy do
-    its('Domain member: Digitally encrypt or sign secure channel data (always)') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\Netlogon\Parameters') do
+    its('RequireSignOrSeal') { should eq 1 }
   end
 end
 
@@ -118,8 +118,8 @@ control 'cis-encrypt-channel-data-when-possible-2.3.6.2' do
   title '2.3.6.1 Ensure Domain member: Digitally encrypt secure channel data (when possible) is set to Enabled'
   desc 'Ensure Domain member: Digitally encrypt secure channel data (when possible) is set to Enabled'
   
-  describe security_policy do
-    its('Domain member: Digitally encrypt secure channel data (when possible)') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\Netlogon\Parameters') do
+    its('sealsecurechannel') { should eq 1 }
   end
 end
 
@@ -128,8 +128,8 @@ control 'cis-sign-channel-data-when-possible-2.3.6.3' do
   title '2.3.6.1 Ensure Domain member: Digitally sign secure channel data (when possible) is set to Enabled'
   desc 'Ensure Domain member: Digitally sign secure channel data (when possible) is set to Enabled'
   
-  describe security_policy do
-    its('Domain member: Digitally sign secure channel data (when possible)') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\Netlogon\Parameters') do
+    its('signsecurechannel') { should eq 1 }
   end
 end
 
@@ -138,8 +138,8 @@ control 'cis-disable-machine-password-changes-2.3.6.4' do
   title '2.3.6.4 Ensure Domain member: Disable machine account password changes is set to Disabled'
   desc 'Ensure Domain member: Disable machine account password changes is set to Disabled'
   
-  describe security_policy do
-    its('Domain member: Disable machine account password changes') { should eq 'Disabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\Netlogon\Parameters') do
+    its('disablepasswordchange') { should eq 0 }
   end
 end
 
@@ -148,9 +148,9 @@ control 'cis-machine-account-password-age-2.3.6.5' do
   title '2.3.6.5 Ensure Domain member: Maximum machine account password age is set to 30 or fewer days, but not 0'
   desc 'Ensure Domain member: Maximum machine account password age is set to 30 or fewer days, but not 0'
   
-  describe security_policy do
-    its('Domain member: Maximum machine account password age') { should be > 0 }
-    its('Domain member: Maximum machine account password age') { should be <= 30 }
+  describe registry_key ('HKLM\\System\CurrentControlSet\Services\Netlogon\Parameters') do
+    its('MaximumPasswordAge') { should be > 0 }
+    its('MaximumPasswordAge') { should be <= 30 }
   end
 end
 
@@ -159,8 +159,8 @@ control 'cis-strong-session-key-2.3.6.6' do
   title '2.3.6.6 Ensure Domain member: Require strong (Windows 2000 or later) session key is set to Enabled'
   desc 'Ensure Domain member: Require strong (Windows 2000 or later) session key is set to Enabled'
   
-  describe security_policy do
-    its('Domain member: Require strong (Windows 2000 or later) session key') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\Netlogon\Parameters') do
+    its('requirestrongkey') { should eq 1 }
   end
 end
 
