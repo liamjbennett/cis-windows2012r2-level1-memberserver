@@ -173,8 +173,8 @@ control 'cis-logon-dont-display-last-user-2.3.7.1' do
   title '2.3.7.1 Ensure Interactive logon: Do not display last user name is set to Enabled'
   desc 'Ensure Interactive logon: Do not display last user name is set to Enabled'
   
-  describe security_policy do
-    its('Interactive logon: Do not display last user name') { should eq 'Enabled' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
+    its('DontDisplayLastUserName') { should eq 1 }
   end
 end
 
@@ -183,8 +183,8 @@ control 'cis-logon-ctrl-alt-del-2.3.7.2' do
   title '2.3.7.2 Ensure Interactive logon: Do not require CTRL+ALT+DEL is set to Disabled'
   desc 'Ensure Interactive logon: Do not require CTRL+ALT+DEL is set to Disabled'
   
-  describe security_policy do
-    its('Interactive logon: Do not require CTRL+ALT+DEL') { should eq 'Disabled' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
+    its('DisableCAD') { should eq 0 }
   end
 end
 
@@ -193,29 +193,29 @@ control 'cis-logon-machine-inactivity-2.3.7.3' do
   title '2.3.7.3 Ensure Interactive logon: Machine inactivity limit is set to 900 or fewer seconds but not 0'
   desc 'Ensure Interactive logon: Machine inactivity limit is set to 900 or fewer seconds but not 0'
   
-  describe security_policy do
-    its('Interactive logon: Machine inactivity limit') { should be > 0 }
-    its('Interactive logon: Machine inactivity limit') { should be <= 900 }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
+    its('InactivityTimeoutSecs') { should be > 0 }
+    its('InactivityTimeoutSecs') { should be <= 900 }
   end
 end
 
 control 'cis-logon-message-text-2.3.7.4' do
   impact 0.7
-  title '2.3.7.4 Interactive logon: Message text for users attempting to log on'
-  desc 'Interactive logon: Message text for users attempting to log on'
+  title '2.3.7.4 Ensure Interactive logon: Message text for users attempting to log on is not blank'
+  desc 'Ensure Interactive logon: Message text for users attempting to log on is not blank'
   
-  describe security_policy do
-    its('Interactive logon: Message text for users attempting to log on') { should_not be '' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
+    its('LegalNoticeText') { should_not be '' }
   end
 end
 
 control 'cis-logon-message-title-2.3.7.5' do
   impact 0.7
-  title '2.3.7.4 Interactive logon: Message title for users attempting to log on'
-  desc 'Interactive logon: Message title for users attempting to log on'
+  title '2.3.7.4 Interactive logon: Message title for users attempting to log on is not blank'
+  desc 'Ensure Interactive logon: Message title for users attempting to log on is not blank'
   
-  describe security_policy do
-    its('Interactive logon: Message title for users attempting to log on') { should_not be '' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
+    its('LegalNoticeCaption') { should_not be '' }
   end
 end
 
@@ -224,8 +224,8 @@ control 'cis-logon-cache-2.3.7.6' do
   title '2.3.7.6 Ensure Interactive logon: Number of previous logons to cache (in case domain controller is not available) is set to 4 or fewer'
   desc 'Ensure Interactive logon: Number of previous logons to cache (in case domain controller is not available) is set to 4 or fewer'
   
-  describe security_policy do
-    its('Interactive logon: Number of previous logons to cache (in case domain controller is not available)') { should be <= 4 }
+  describe registry_key ('HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon') do
+    its('CachedLogonsCount') { should be <= "4" }
   end
 end
 
@@ -234,9 +234,9 @@ control 'cis-logon-change-password-prompt-2.3.7.7' do
   title '2.3.7.7 Ensure Interactive logon: Prompt user to change password before expiration is set to between 5 and 14 days'
   desc 'Ensure Interactive logon: Prompt user to change password before expiration is set to between 5 and 14 days'
 
-  describe security_policy do
-    its('Interactive logon: Prompt user to change password before expiration') { should be >= 5 }
-    its('Interactive logon: Prompt user to change password before expiration') { should be <= 14 }
+  describe registry_key ('HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon') do
+    its('PasswordExpiryWarning') { should be >= 5 }
+    its('PasswordExpiryWarning') { should be <= 14 }
   end
 end
 
@@ -245,8 +245,8 @@ control 'cis-logon-require-domain-to-unlock-2.3.7.8' do
   title '2.3.7.8 Ensure Interactive logon: Require Domain Controller Authentication to unlock workstation is set to Enabled'
   desc 'Ensure Interactive logon: Require Domain Controller Authentication to unlock workstation is set to Enabled'
   
-  describe security_policy do
-    its('Interactive logon: Require Domain Controller Authentication to unlock workstation') { should eq 'Enabled' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon') do
+    its('ForceUnlockLogon') { should eq 1 }
   end
 end
 
@@ -255,8 +255,8 @@ control 'cis-logon-smartcard-removal-2.3.7.9' do
   title '2.3.7.9 Interactive logon: Smart card removal behavior is set to Lock Workstation'
   desc 'Interactive logon: Smart card removal behavior is set to Lock Workstation'
   
-  describe security_policy do
-    its('Interactive logon: Smart card removal behavior') { should eq 'Lock Workstation' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon') do
+    its('ScRemoveOption') { should eq '1' }
   end
 end
 
@@ -265,8 +265,8 @@ control 'cis-network-digital-sign-always-2.3.8.1' do
   title '2.3.8.1 Ensure Microsoft network client: Digitally sign communications (always) is set to Enabled'
   desc 'Ensure Microsoft network client: Digitally sign communications (always) is set to Enabled'
   
-  describe security_policy do
-    its('Microsoft network client: Digitally sign communications (always)') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\LanmanWorkstation\Parameters') do
+    its('RequireSecuritySignature') { should eq 1 }
   end
 end
 
@@ -275,8 +275,8 @@ control 'cis-network-digital-sign-agrees-2.3.8.2' do
   title '2.3.8.2 Ensure Microsoft network client: Digitally sign communications (if server agrees) is set to Enabled'
   desc 'Ensure Microsoft network client: Digitally sign communications (if server agrees) is set to Enabled'
   
-  describe security_policy do
-    its('Microsoft network client: Digitally sign communications (if server agrees)') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\LanmanWorkstation\Parameters') do
+    its('EnableSecuritySignature') { should eq 1 }
   end
 end
 
@@ -285,8 +285,8 @@ control 'cis-network-disable-unencrypted-smb-2.3.8.3' do
   title '2.3.8.3 Ensure Microsoft network client: Send unencrypted password to third-party SMB servers is set to Disabled'
   desc 'Ensure Microsoft network client: Send unencrypted password to third-party SMB servers is set to Disabled'
   
-  describe security_policy do
-    its('Microsoft network client: Send unencrypted password to third-party SMB servers') { should eq 'Disabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\LanmanWorkstation\Parameters') do
+    its('EnablePlainTextPassword') { should eq 0 }
   end
 end
 
@@ -299,9 +299,9 @@ control 'cis-network-server-idle-before-suspend-2.3.9.1' do
   title '2.3.9.1 Ensure Microsoft network server: Amount of idle time required before suspending session is set to 15 or fewer minute(s), but not 0'
   desc 'Ensure Microsoft network server: Amount of idle time required before suspending session is set to 15 or fewer minute(s), but not 0'
   
-  describe security_policy do
-    its('Microsoft network server: Amount of idle time required before suspending session') { should be > 0 }
-    its('Microsoft network server: Amount of idle time required before suspending session') { should be <= 15 }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\LanManServer\Parameters') do
+    its('AutoDisconnect') { should be > 0 }
+    its('AutoDisconnect') { should be <= 15 }
   end
 end
 
@@ -310,8 +310,8 @@ control 'cis-network-server-digital-sign-always-2.3.9.2' do
   title '2.3.9.2 Ensure Microsoft network server: Digitally sign communications (always) is set to Enabled'
   desc 'Ensure Microsoft network server: Digitally sign communications (always) is set to Enabled'
   
-  describe security_policy do
-    its('Microsoft network server: Digitally sign communications (always)') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\LanManServer\Parameters') do
+    its('RequireSecuritySignature') { should eq 1 }
   end
 end
 
@@ -320,8 +320,8 @@ control 'cis-network-server-digtial-asign-agrees-2.3.9.3' do
   title '2.3.9.2 Microsoft network server: Digitally sign communications (if client agrees) is set to Enabled'
   desc 'Microsoft network server: Digitally sign communications (if client agrees) is set to Enabled'
   
-  describe security_policy do
-    its('Microsoft network server: Digitally sign communications (if client agrees)') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\LanManServer\Parameters') do
+    its('EnableSecuritySignature') { should eq 1 }
   end
 end
 
@@ -330,8 +330,8 @@ control 'cis-network-server-disconnect-clients-2.3.9.4' do
   title '2.3.9.4 Ensure Microsoft network server: Disconnect clients when logon hours expire is set to Enabled'
   desc 'Ensure Microsoft network server: Disconnect clients when logon hours expire is set to Enabled'
   
-  describe security_policy do
-    its('Microsoft network server: Disconnect clients when logon hours expire') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\LanManServer\Parameters') do
+    its('EnableForcedLogOff') { should eq 1 }
   end
 end
 
@@ -340,12 +340,12 @@ control 'cis-network-server-spn-validation-level-2.3.9.5' do
   title '2.3.9.5 Ensure Microsoft network server: Server SPN target name validation level is set to Accept if provided by client'
   desc 'Ensure Microsoft network server: Server SPN target name validation level is set to Accept if provided by client'
   
-  describe security_policy do
-    its('Microsoft network server: Server SPN target name validation level') { should eq 'Accept if provided by client' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\LanmanServer\Parameters') do
+    its('SmbServerNameHardeningLevel') { should eq 1 }
   end
 end
 
-#
+#ww
 # 2.3.10 Network access
 #
 
@@ -355,7 +355,7 @@ control 'cis-network-access-allow-anonymous-2.3.10.1' do
   desc 'Ensure Network access: Allow anonymous SID/Name translation is set to Disabled'
   
   describe security_policy do
-    its('Network access: Allow anonymous SID/Name translation') { should eq 'Disabled' }
+    its('LSAAnonymousNameLookup') { should eq 0}
   end
 end
 
@@ -364,8 +364,8 @@ control 'cis-network-access-deny-anonymous-sam-2.3.10.2' do
   title '2.3.10.2 Ensure Network access: Do not allow anonymous enumeration of SAM accounts is set to Enabled'
   desc 'Ensure Network access: Do not allow anonymous enumeration of SAM accounts is set to Enabled'
   
-  describe security_policy do
-    its('Network access: Do not allow anonymous enumeration of SAM accounts') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Lsa') do
+    its('RestrictAnonymousSAM') { should eq 1 }
   end
 end
 
@@ -374,8 +374,8 @@ control 'cis-network-access-deny-enumeration-of-sam-2.3.10.3' do
   title '2.3.10.3 Ensure Network access: Do not allow anonymous enumeration of SAM accounts and shares is set to Enabled'
   desc 'Ensure Network access: Do not allow anonymous enumeration of SAM accounts and shares is set to Enabled'
   
-  describe security_policy do
-    its('Network access: Do not allow anonymous enumeration of SAM accounts') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Lsa') do
+    its('RestrictAnonymous') { should eq 1 }
   end
 end
 
@@ -384,28 +384,28 @@ control 'cis-network-access-deny-storage-of-passwords-2.3.10.4' do
   title '2.3.10.4 Ensure Network access: Do not allow storage of passwords and credentials for network authentication is set to Enabled'
   desc 'Ensure Network access: Do not allow storage of passwords and credentials for network authentication is set to Enabled'
   
-  describe security_policy do
-    its('Network access: Do not allow storage of passwords and credentials for network authentication') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Lsa') do
+    its('DisableDomainCreds') { should eq 1 }
   end
 end
 
-control 'cis-network-access-deny-everyone-for-annon-2.3.10.5' do
+control 'cis-network-access-deny-everyone-for-anon-2.3.10.5' do
   impact 0.7
   title '2.3.10.5 Ensure Network access: Let Everyone permissions apply to anonymous users is set to Disabled'
   desc 'Ensure Network access: Let Everyone permissions apply to anonymous users is set to Disabled'
   
-  describe security_policy do
-    its('Network access: Let Everyone permissions apply to anonymous users') { should eq 'Disabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Lsa') do
+    its('EveryoneIncludesAnonymous') { should eq 0 }
   end
 end
 
-control 'cis-network-access-named-pipes-annon-2.3.10.6' do
+control 'cis-network-access-named-pipes-anon-2.3.10.6' do
   impact 0.7
   title '2.3.10.6 Configure Network access: Named Pipes that can be accessed anonymously'
   desc 'Configure Network access: Named Pipes that can be accessed anonymously'
   
-  describe security_policy do
-    its('Network access: Named Pipes that can be accessed anonymously') { should eq '' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\LanManServer\Parameters') do
+    its('NullSessionPipes') { should eq [] }
   end
 end
 
@@ -415,13 +415,13 @@ control 'cis-network-access-remote-registry-2.3.10.7' do
   desc 'Network access: Remotely accessible registry paths'
   
   $paths = [
-    'System\CurrentControlSet\Control\ProductOptions',
-    'System\CurrentControlSet\Control\Server Applications',
-    'Software\Microsoft\Windows NT\CurrentVersion'
+    'HKLM\System\CurrentControlSet\Control\ProductOptions',
+    'HKLM\System\CurrentControlSet\Control\Server Applications',
+    'HKLM\Software\Microsoft\Windows NT\CurrentVersion'
   ]
 
-  describe security_policy do
-    its('Network access: Remotely accessible registry paths') { should eq $paths }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\SecurePipeServers\Winreg\AllowedExactPaths') do
+    its('Machine') { should eq $paths }
   end
 end
 
@@ -444,8 +444,8 @@ control 'cis-network-access-remote-registry-subpaths-2.3.10.8' do
     'System\CurrentControlSet\Services\SysmonLog'
   ]
 
-  describe security_policy do
-    its('Network access: Remotely accessible registry paths and sub-paths') { should eq $paths }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\SecurePipeServers\Winreg\AllowedPaths') do
+    its('Machine') { should eq $paths }
   end
 end
 
@@ -454,18 +454,18 @@ control 'cis-network-access-restrict-name-pipes-2.3.10.9' do
   title '2.3.10.9 Network access: Restrict anonymous access to Named Pipes and Shares is set to Enabled'
   desc 'Network access: Restrict anonymous access to Named Pipes and Shares is set to Enabled'
   
-  describe security_policy do
-    its('Network access: Restrict anonymous access to Named Pipes and Shares') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\LanManServer\Parameters') do
+    its('RestrictNullSessAccess') { should eq 1 }
   end
 end
 
-control 'cis-network-access-deny-annon-shares-2.3.10.10' do
+control 'cis-network-access-deny-anon-shares-2.3.10.10' do
   impact 0.7
   title '2.3.10.10 Network access: Shares that can be accessed anonymously is set to None'
   desc 'Network access: Shares that can be accessed anonymously is set to None'
   
-  describe security_policy do
-    its('Network access: Shares that can be accessed anonymously') { should eq '' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Services\LanManServer\Parameters') do
+    its('NullSessionShares') { should eq [] }
   end
 end
 
@@ -474,8 +474,8 @@ control 'cis-network-access-classic-security-for-local-accounts-2.3.10.11' do
   title '2.3.10.11 Ensure Network access: Sharing and security model for local accounts is set to Classic - local users authenticate as themselves'
   desc 'Ensure Network access: Sharing and security model for local accounts is set to Classic - local users authenticate as themselves'
   
-  describe security_policy do
-    its('Network access: Sharing and security model for local accounts') { should eq 'Classic - local users authenticate as themselves' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Lsa') do
+    its('ForceGuest') { should eq 'Classic - local users authenticate as themselves' }
   end
 end
 
