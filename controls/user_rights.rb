@@ -79,7 +79,7 @@ control 'cis-allow-login-rds-2.2.7' do
 
   describe security_policy do
     its('SeRemoteInteractiveLogonRight') { should include 'S-1-5-32-544' }
-    its('SeRemoteInteractiveLogonRights') { should include 'S-1-5-32-555' }
+    its('SeRemoteInteractiveLogonRight') { should include 'S-1-5-32-555' }
   end
 end
 
@@ -222,7 +222,7 @@ control 'cis-deny-logon-as-batch-job-guests-2.2.18' do
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
   
   describe security_policy do
-    its('SeDenyBatchLogonRight') { should include ['S-1-5-32-546'] }
+    its('SeDenyBatchLogonRight') { should include 'S-1-5-32-546' }
   end
 end
 
@@ -235,7 +235,7 @@ control 'cis-deny-logon-as-service-guests-2.2.19' do
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
   describe security_policy do
-    its('SeDenyServiceLogonRight') { should include ['S-1-5-32-546'] }
+    its('SeDenyServiceLogonRight') { should include 'S-1-5-32-546' }
   end
 end
 
@@ -248,7 +248,7 @@ control 'cis-deny-logon-locally-guests-2.2.20' do
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
   
   describe security_policy do
-    its('SeDenyInteractiveLogonRight') { should include ['S-1-5-32-546'] }
+    its('SeDenyInteractiveLogonRight') { should include 'S-1-5-32-546' }
   end
 end
 
@@ -261,7 +261,8 @@ control 'cis-deny-logon-RDS-2.2.21' do
   ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
   describe security_policy do
-    its('SeDenyRemoteInteractiveLogonRight') { should eq ['S-1-5-32-546','S-1-2-0'] }
+    its('SeDenyRemoteInteractiveLogonRight') { should include 'S-1-5-32-546' }
+    its('SeDenyRemoteInteractiveLogonRight') { should include 'S-1-2-0' }
   end
 end
 
