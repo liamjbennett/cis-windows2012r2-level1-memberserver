@@ -414,14 +414,14 @@ control 'cis-network-access-remote-registry-2.3.10.7' do
   title '2.3.10.7 Ensure Network access: Remotely accessible registry paths'
   desc 'Network access: Remotely accessible registry paths'
   
-  $paths = [
-    'HKLM\System\CurrentControlSet\Control\ProductOptions',
-    'HKLM\System\CurrentControlSet\Control\Server Applications',
-    'HKLM\Software\Microsoft\Windows NT\CurrentVersion'
+  $allowedexactpaths = [
+    'System\CurrentControlSet\Control\ProductOptions',
+    'System\CurrentControlSet\Control\Server Applications',
+    'Software\Microsoft\Windows NT\CurrentVersion'
   ]
 
   describe registry_key ('HKLM\System\CurrentControlSet\Control\SecurePipeServers\Winreg\AllowedExactPaths') do
-    its('Machine') { should eq $paths }
+    its('Machine') { should eq $allowedexactpaths }
   end
 end
 
@@ -441,7 +441,7 @@ control 'cis-network-access-remote-registry-subpaths-2.3.10.8' do
     'System\CurrentControlSet\Control\Terminal Server\UserConfig',
     'System\CurrentControlSet\Control\Terminal Server\DefaultUserConfiguration',
     'Software\Microsoft\Windows NT\CurrentVersion\Perflib',
-    'System\CurrentControlSet\Services\SysmonLog'
+    'System\CurrentControlSet\Services\SysmonLog',
   ]
 
   describe registry_key ('HKLM\System\CurrentControlSet\Control\SecurePipeServers\Winreg\AllowedPaths') do
@@ -475,7 +475,7 @@ control 'cis-network-access-classic-security-for-local-accounts-2.3.10.11' do
   desc 'Ensure Network access: Sharing and security model for local accounts is set to Classic - local users authenticate as themselves'
   
   describe registry_key ('HKLM\System\CurrentControlSet\Control\Lsa') do
-    its('ForceGuest') { should eq 'Classic - local users authenticate as themselves' }
+    its('ForceGuest') { should eq 0 }
   end
 end
 
@@ -488,8 +488,8 @@ control 'cis-network-security-local-system-ntlm-2.3.11.1' do
   title '2.3.11.1 Network security: Allow Local System to use computer identity for NTLM is set to Enabled'
   desc 'Network security: Allow Local System to use computer identity for NTLM is set to Enabled'
   
-  describe security_policy do
-    its('Network security: Allow Local System to use computer identity for NTLM') { should eq 'Enabled' }
+  describe registry_key('HKLM\System\CurrentControlSet\Control\Lsa') do
+    its('UseMachineId') { should eq 1 }
   end
 end
 
@@ -498,8 +498,8 @@ control 'cis-network-security-local-system-null-session-2.3.11.2' do
   title '2.3.11.2 Network security: Allow LocalSystem NULL session fallback is set to Disabled'
   desc 'Network security: Allow LocalSystem NULL session fallback is set to Disabled'
   
-  describe security_policy do
-    its('Network security: Allow LocalSystem NULL session fallback') { should eq 'Disabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Lsa\MSV1_0') do
+    its('allownullsessionfallback') { should eq 0 }
   end
 end
 
@@ -508,8 +508,8 @@ control 'cis-network-security-pku2u-auth-online-identities-2.3.11.3' do
   title '2.3.11.3 Ensure Network Security: Allow PKU2U authentication requests to this computer to use online identities is set to Disabled'
   desc 'Ensure Network Security: Allow PKU2U authentication requests to this computer to use online identities is set to Disabled'
   
-  describe security_policy do
-    its('Network Security: Allow PKU2U authentication requests to this computer to use online identities') { should eq 'Disabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Lsa\pku2u') do
+    its('AllowOnlineID') { should eq 0 }
   end
 end
 
@@ -518,8 +518,8 @@ control 'cis-network-security-encryptions-types-for-kerberos-2.3.11.4' do
   title '2.3.11.4 Ensure Network Security: Configure encryption types allowed for Kerberos is set to RC4_HMAC_MD5, AES128_HMAC_SHA1, AES256_HMAC_SHA1, Future encryption types'
   desc 'Ensure Network Security: Configure encryption types allowed for Kerberos is set to RC4_HMAC_MD5, AES128_HMAC_SHA1, AES256_HMAC_SHA1, Future encryption types'
   
-  describe security_policy do
-    its('Network Security: Configure encryption types allowed for Kerberos') { should eq 'RC4_HMAC_MD5, AES128_HMAC_SHA1, AES256_HMAC_SHA1, Future encryption types' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\Kerberos\Parameters') do
+    its('SupportedEncryptionTypes') { should eq 2147483644 }
   end
 end
 
@@ -528,8 +528,8 @@ control 'cis-network-security-donot-store-lanmanger-hash-2.3.11.5' do
   title '2.3.11.5 Ensure Network security: Do not store LAN Manager hash value on next password change is set to Enabled'
   desc 'Ensure Network security: Do not store LAN Manager hash value on next password change is set to Enabled'
   
-  describe security_policy do
-    its('Network security: Do not store LAN Manager hash value on next password change') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Lsa') do
+    its('NoLMHash') { should eq 1 }
   end
 end
 
@@ -539,7 +539,7 @@ control 'cis-network-security-force-logoff-on-expire-2.3.11.6' do
   desc 'Ensure Network security: Force logoff when logon hours expire is set to Enabled'
   
   describe security_policy do
-    its('Network security: Force logoff when logon hours expire') { should eq 'Enabled' }
+    its('ForceLogoffWhenHourExpire') { should eq 1 }
   end
 end
 
@@ -548,8 +548,8 @@ control 'cis-network-security-lanmanager-auth-level-2.3.11.7' do
   title '2.3.11.7 Ensure Network security: LAN Manager authentication level is set to Send NTLMv2 response only. Refuse LM & NTLM'
   desc 'Ensure Network security: LAN Manager authentication level is set to Send NTLMv2 response only. Refuse LM & NTLM'
   
-  describe security_policy do
-    its('Network security: LAN Manager authentication level') { should eq 'Send NTLMv2 response only. Refuse LM & NTLM' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Lsa') do
+    its('LmCompatibilityLevel') { should eq 5 }
   end
 end
 
@@ -558,8 +558,13 @@ control 'cis-network-security-ldap-signing-requirements-2.3.11.8' do
   title '2.3.11.8 Network security: LDAP client signing requirements is set to Negotiate signing or higher'
   desc 'Network security: LDAP client signing requirements is set to Negotiate signing or higher'
   
-  describe security_policy do
-    its('Network security: LDAP client signing requirements') { should be_in ['Negotiate signing','Require signing'] }
+  describe.one do
+    describe registry_key ('HKLM\System\CurrentControlSet\Services\LDAP') do
+      its('LDAPClientIntegrity') { should eq 1 }
+    end
+    describe registry_key ('HKLM\System\CurrentControlSet\Services\LDAP') do
+      its('LDAPClientIntegrity') { should eq 2 }
+    end
   end
 end
 
@@ -568,8 +573,8 @@ control 'cis-network-security-session-ntlm-ssp-clients-2.3.11.9' do
   title '2.3.11.9 Ensure Network security: Minimum session security for NTLM SSP based (including secure RPC) clients is set to Require NTLMv2 session security, Require 128-bit encryption'
   desc 'Ensure Network security: Minimum session security for NTLM SSP based (including secure RPC) clients is set to Require NTLMv2 session security, Require 128-bit encryption'
   
-  describe security_policy do
-    its('Network security: Minimum session security for NTLM SSP based (including secure RPC) clients') { should eq 'Require NTLMv2 session security, Require 128-bit encryption' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Lsa\MSV1_0') do
+    its('NTLMMinClientSec') { should eq 537395200 }
   end
 end
 
@@ -578,8 +583,8 @@ control 'cis-network-security-session-ntlm-ssp-servers-2.3.11.10' do
   title '2.3.11.10 Ensure Network security: Minimum session security for NTLM SSP based (including secure RPC) servers is set to Require NTLMv2 session security, Require 128-bit encryption'
   desc 'Ensure Network security: Minimum session security for NTLM SSP based (including secure RPC) servers is set to Require NTLMv2 session security, Require 128-bit encryption'
   
-  describe security_policy do
-    its('Network security: Minimum session security for NTLM SSP based (including secure RPC) servers') { should eq 'Require NTLMv2 session security, Require 128-bit encryption' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Lsa\MSV1_0') do
+    its('NTLMMinServerSec') { should eq 537395200 }
   end
 end
 
@@ -588,8 +593,8 @@ control 'cis-shutdown-without-logon-2.3.13.1' do
   title '2.3.13.1 Ensure Shutdown: Allow system to be shut down without having to log on is set to Disabled'
   desc 'Ensure Shutdown: Allow system to be shut down without having to log on is set to Disabled'
   
-  describe security_policy do
-    its('Shutdown: Allow system to be shut down without having to log on') { should eq 'Disabled' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
+    its('ShutdownWithoutLogon') { should eq 0 }
   end
 end
 
@@ -598,8 +603,8 @@ control 'cis-case-insensitive-for-non-subsystem-2.3.15.1' do
   title '2.3.15.1 Ensure System objects: Require case insensitivity for non-Windows subsystems is set to Enabled'
   desc 'Ensure System objects: Require case insensitivity for non-Windows subsystems is set to Enabled'
   
-  describe security_policy do
-    its('Ensure System objects: Require case insensitivity for non-Windows subsystems') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Session Manager\Kernel') do
+    its('ObCaseInsensitive') { should eq 1 }
   end
 end
 
@@ -608,8 +613,8 @@ control 'cis-strengthen-defaults-for-system-objects-2.3.15.2' do
   title '2.3.15.2 Ensure System objects: Strengthen default permissions of internal system objects (e.g. Symbolic Links) is set to Enabled'
   desc 'Ensure System objects: Strengthen default permissions of internal system objects (e.g. Symbolic Links) is set to Enabled'
   
-  describe security_policy do
-    its('System objects: Strengthen default permissions of internal system objects (e.g. Symbolic Links)') { should eq 'Enabled' }
+  describe registry_key ('HKLM\System\CurrentControlSet\Control\Session Manager') do
+    its('ProtectionMode') { should eq 1 }
   end
 end
 
@@ -618,8 +623,8 @@ control 'cis-uac-admin-approval-mode-2.3.17.1' do
   title '2.3.17.1 Ensure User Account Control: Admin Approval Mode for the Built-in Administrator account is set to Enabled'
   desc 'Ensure User Account Control: Admin Approval Mode for the Built-in Administrator account is set to Enabled'
   
-  describe security_policy do
-    its('User Account Control: Admin Approval Mode for the Built-in Administrator account') { should eq 'Enabled' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
+    its('FilterAdministratorToken') { should eq 1 }
   end
 end
 
@@ -629,8 +634,8 @@ control 'cis-uac-application-prompt-for-elevation-2.3.17.2' do
   desc 'Ensure User Account Control: Allow UIAccess applications to prompt for elevation without using the secure desktop is set to Disabled'
   
 
-  describe security_policy do
-    its('User Account Control: Allow UIAccess applications to prompt for elevation without using the secure desktop') { should eq 'Disabled' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
+    its('EnableUIADesktopToggle') { should eq 0 }
   end
 end
 
@@ -639,8 +644,8 @@ control 'cis-uac-elevation-prompt-behaviour-admins-2.3.17.3' do
   title '2.3.17.3 Ensure User Account Control: Behavior of the elevation prompt for administrators in Admin Approval Mode is set to Prompt for consent on the secure desktop'
   desc 'Ensure User Account Control: Behavior of the elevation prompt for administrators in Admin Approval Mode is set to Prompt for consent on the secure desktop'
   
-  describe security_policy do
-    its('User Account Control: Behavior of the elevation prompt for administrators in Admin Approval Mode') { should eq 'Prompt for consent on the secure desktop' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
+    its('ConsentPromptBehaviorAdmin') { should eq 2 }
   end
 end
 
@@ -649,8 +654,8 @@ control 'cis-uac-elevation-prompt-behaviour-standard-2.3.17.4' do
   title '2.3.17.4 Ensure User Account Control: Behavior of the elevation prompt for standard users is set to Automatically deny elevation requests'
   desc 'Ensure User Account Control: Behavior of the elevation prompt for standard users is set to Automatically deny elevation requests'
   
-  describe security_policy do
-    its('User Account Control: Behavior of the elevation prompt for standard users') { should eq 'Automatically deny elevation requests' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
+    its('ConsentPromptBehaviorUser') { should eq 0 }
   end
 end
 
@@ -659,8 +664,8 @@ control 'cis-uac-detect-app-installation-2.3.17.5' do
   title '2.3.17.5 Ensure User Account Control: Detect application installations and prompt for elevation is set to Enabled'
   desc 'Ensure User Account Control: Detect application installations and prompt for elevation is set to Enabled'
   
-  describe security_policy do
-    its('User Account Control: Detect application installations and prompt for elevation') { should eq 'Enabled' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
+    its('EnableInstallerDetection') { should eq 1 }
   end
 end
 
@@ -669,8 +674,8 @@ control 'cis-uac-only-evevate-secure-apps-2.3.17.6' do
   title '2.3.17.6 Ensure User Account Control: Only elevate UIAccess applications that are installed in secure locations is set to Enabled'
   desc 'Ensure User Account Control: Only elevate UIAccess applications that are installed in secure locations is set to Enabled'
   
-  describe security_policy do
-    its('User Account Control: Only elevate UIAccess applications that are installed in secure locations') { should eq 'Enabled' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
+    its('EnableSecureUIAPaths') { should eq 1 }
   end
 end
 
@@ -679,8 +684,8 @@ control 'cis-uac-administrators-in-admin-mode-2.3.17.7' do
   title '2.3.17.7 Ensure User Account Control: Run all administrators in Admin Approval Mode is set to Enabled'
   desc 'Ensure User Account Control: Run all administrators in Admin Approval Mode is set to Enabled'
   
-  describe security_policy do
-    its('User Account Control: Run all administrators in Admin Approval Mode') { should eq 'Enabled' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
+    its('EnableLUA') { should eq 1 }
   end
 end
 
@@ -689,8 +694,8 @@ control 'cis-uac-switch-to-secure-desktop-2.3.17.8' do
   title '2.3.17.8 Ensure User Account Control: Switch to the secure desktop when prompting for elevation is set to Enabled'
   desc 'Ensure User Account Control: Switch to the secure desktop when prompting for elevation is set to Enabled'
   
-  describe security_policy do
-    its('User Account Control: Switch to the secure desktop when prompting for elevation') { should eq 'Enabled' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
+    its('PromptOnSecureDesktop') { should eq 1 }
   end
 end
 
@@ -699,7 +704,7 @@ control 'cis-uac-virtualize-file-and-registry-failures-2.3.17.9' do
   title '2.3.17.9 Ensure User Account Control: Virtualize file and registry write failures to per-user locations is set to Enabled'
   desc 'Ensure User Account Control: Virtualize file and registry write failures to per-user locations is set to Enabled'
 
-  describe security_policy do
-    its('policUser Account Control: Virtualize file and registry write failures to per-user locationsy_name') { should eq 'Enabled' }
+  describe registry_key ('HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System') do
+    its('EnableVirtualization') { should eq 1 }
   end
 end
