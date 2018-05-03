@@ -379,16 +379,6 @@ control 'cis-network-access-deny-enumeration-of-sam-2.3.10.3' do
   end
 end
 
-control 'cis-network-access-deny-storage-of-passwords-2.3.10.4' do
-  impact 0.7
-  title '2.3.10.4 Ensure Network access: Do not allow storage of passwords and credentials for network authentication is set to Enabled'
-  desc 'Ensure Network access: Do not allow storage of passwords and credentials for network authentication is set to Enabled'
-  
-  describe registry_key ('HKLM\System\CurrentControlSet\Control\Lsa') do
-    its('DisableDomainCreds') { should eq 1 }
-  end
-end
-
 control 'cis-network-access-deny-everyone-for-anon-2.3.10.5' do
   impact 0.7
   title '2.3.10.5 Ensure Network access: Let Everyone permissions apply to anonymous users is set to Disabled'
