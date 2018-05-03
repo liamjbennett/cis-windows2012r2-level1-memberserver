@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 title 'Windows Firewall With Advanced Security'
 
 control 'cis-domain-firewall-on-9.1.1' do

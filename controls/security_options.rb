@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 title 'Security Options'
 
 control 'cis-admin-account-status-2.3.1.1' do
