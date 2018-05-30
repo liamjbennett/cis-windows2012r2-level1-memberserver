@@ -7,7 +7,7 @@ control 'cis-domain-firewall-on-9.1.1' do
   title '9.1.1 Ensure Windows Firewall: Domain: Firewall state is set to On'
   desc 'Ensure Windows Firewall: Domain: Firewall state is set to On' 
   
-  describe registry_key('DomainProfile', 'HKLM\SYSTEM\CurrentControlSet\services\SharedAccess\Parameters\FirewallPolicy\DomainProfile') do
+  describe registry_key('DomainProfile', 'HKLM\Software\Policies\Microsoft\WindowsFirewall\DomainProfile') do
     its('EnableFirewall') { should eq 1 }
   end
 end
@@ -337,3 +337,4 @@ control 'cis-public-firewall-log-successful-connections-9.3.10' do
     its('LogSuccessfulConnections') { should eq 1 }
   end
 end
+
