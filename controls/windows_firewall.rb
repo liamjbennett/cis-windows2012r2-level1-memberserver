@@ -2,6 +2,8 @@
 
 title 'Windows Firewall With Advanced Security'
 
+# 9.1 Domain Profile
+
 control 'cis-domain-firewall-on-9.1.1' do
   impact 0.7
   title '9.1.1 Ensure Windows Firewall: Domain: Firewall state is set to On'
@@ -114,9 +116,13 @@ control 'cis-domain-firewall-log-successful-connections-9.1.10' do
   end
 end
 
-control 'cis-domain-firewall-on-9.2.1' do
+#
+# 9.2 Private Profile
+#
+
+control 'cis-private-firewall-on-9.2.1' do
   impact 0.7
-  title '9.1.1 Ensure Windows Firewall: Private: Firewall state is set to On'
+  title '9.2.1 Ensure Windows Firewall: Private: Firewall state is set to On'
   desc 'Ensure Windows Firewall: Private: Firewall state is set to On' 
   
   describe registry_key('PrivateProfile', 'HKLM\Software\Policies\Microsoft\WindowsFirewall\PrivateProfile') do
@@ -226,7 +232,11 @@ control 'cis-private-firewall-log-successful-connections-9.2.10' do
   end
 end
 
-control 'cis-domain-firewall-on-9.3.1' do
+#
+# 9.3 Public Profile
+#
+
+control 'cis-public-firewall-on-9.3.1' do
   impact 0.7
   title '9.3.1 Ensure Windows Firewall: Public: Firewall state is set to On'
   desc 'Ensure Windows Firewall: Public: Firewall state is set to On' 
