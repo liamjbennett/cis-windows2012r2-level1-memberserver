@@ -57,6 +57,8 @@ control 'cis-password-expiration-time-18.2.2' do
     tag cis: ['windows_2012r2:18.2.2']
     ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
+    only_if { file('C:\Windows\PolicyDefinitions\AdmPwd.admx').file? }
+
     describe registry_key('HKLM\SOFTWARE\Policies\Microsoft\Services\AdmPwd') do
         its('PwdExpirationProtectionEnabled') { should eq 1 }
     end
@@ -70,6 +72,8 @@ control 'cis-password-expiration-time-18.2.3' do
     tag cis: ['windows_2012r2:18.2.3']
     ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
+    only_if { file('C:\Windows\PolicyDefinitions\AdmPwd.admx').file? }
+
     describe registry_key('HKLM\SOFTWARE\Policies\Microsoft\Services\AdmPwd') do
         its('PwdExpirationProtectionEnabled') { should eq 1 }
     end
@@ -78,12 +82,14 @@ end
 control 'cis-password-settings-password-complexity-18.2.4' do
     impact 0.7
     title '18.2.4 Ensure Password Settings: Password Complexity is set to
-    Enabled' 
+    Enabled: Large letters + small letters + numbers + special characters' 
     desc 'Ensure Password Settings: Password Complexity is set to
-    Enabled' 
+    Enabled: Large letters + small letters + numbers + special characters' 
 
     tag cis: ['windows_2012r2:18.2.4']
     ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
+
+    only_if { file('C:\Windows\PolicyDefinitions\AdmPwd.admx').file? }
 
     describe registry_key('HKLM\SOFTWARE\Policies\Microsoft\Services\AdmPwd') do
         its('PasswordComplexity') { should eq 1 }
@@ -100,6 +106,8 @@ control 'cis-password-settings-password-length-18.2.5' do
     tag cis: ['windows_2012r2:18.2.5']
     ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
+    only_if { file('C:\Windows\PolicyDefinitions\AdmPwd.admx').file? }
+
     describe registry_key('HKLM\SOFTWARE\Policies\Microsoft\Services\AdmPwd') do
         its('PasswordLength') { should eq 1 }
     end
@@ -114,6 +122,8 @@ control 'cis-password-settings-password-age-18.2.6' do
 
     tag cis: ['windows_2012r2:18.2.6']
     ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
+
+    only_if { file('C:\Windows\PolicyDefinitions\AdmPwd.admx').file? }
 
     describe registry_key('HKLM\SOFTWARE\Policies\Microsoft\Services\AdmPwd') do
         its('PasswordAgeDays') { should eq 1 }
@@ -132,22 +142,26 @@ control 'cis-automatic-logon-18.3.1' do
     tag cis: ['windows_2012r2:18.3.1']
     ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
+    only_if { file('C:\Windows\PolicyDefinitions\MSS-legacy.admx').file? }
+
     describe registry_key('HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon') do
         its('AutoAdminLogon') { should eq 1 }
     end
 end
 
-control 'cis-ip-routing-protection-level-18.3.2' do
+control 'cis-ipv6-routing-protection-level-18.3.2' do
     impact 0.7
-    title '18.2.6 Ensure MSS: (DisableIPSourceRouting IPv6) IP source routing
+    title '18.3.2 Ensure MSS: (DisableIPSourceRouting IPv6) IP source routing
     protection level (protects against packet spoofing) is set to Enabled:
     Highest protection, source routing is completely disabled' 
     desc 'Ensure MSS: (DisableIPSourceRouting IPv6) IP source routing
     protection level (protects against packet spoofing) is set to Enabled:
     Highest protection, source routing is completely disabled' 
 
-    tag cis: ['windows_2012r2:18.3.1']
+    tag cis: ['windows_2012r2:18.3.2']
     ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
+
+    only_if { file('C:\Windows\PolicyDefinitions\MSS-legacy.admx').file? }
 
     describe registry_key('HKLM\System\CurrentControlSet\Services\Tcpip6\Parameters') do
         its('DisableIPSourceRouting') { should eq 1 }
