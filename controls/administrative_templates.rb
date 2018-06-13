@@ -26,7 +26,7 @@ control 'cis-prevent-enabling-lock-screen-slide-show-18.1.1.2' do
     ref 'CIS Microsoft Windows Server 2012 R2 Benchmark'
 
     describe registry_key('HKLM\Software\Policies\Microsoft\Windows\Personalization') do
-        its('NoLockScreenCamera') { should eq 1 }
+        its('NoLockScreenSlideshow') { should eq 1 }
     end
 end
 
@@ -74,8 +74,8 @@ control 'cis-password-expiration-time-18.2.3' do
 
     only_if { file('C:\Windows\PolicyDefinitions\AdmPwd.admx').file? }
 
-    describe registry_key('HKLM\SOFTWARE\Policies\Microsoft\Services\AdmPwd') do
-        its('PwdExpirationProtectionEnabled') { should eq 1 }
+    describe registry_key('HKLM\SOFTWARE\Policies\Microsoft Services\AdmPwd') do
+        its('AdmPwdEnabled') { should eq 1 }
     end
 end
 
@@ -91,7 +91,7 @@ control 'cis-password-settings-password-complexity-18.2.4' do
 
     only_if { file('C:\Windows\PolicyDefinitions\AdmPwd.admx').file? }
 
-    describe registry_key('HKLM\SOFTWARE\Policies\Microsoft\Services\AdmPwd') do
+    describe registry_key('HKLM\SOFTWARE\Policies\Microsoft Services\AdmPwd') do
         its('PasswordComplexity') { should eq 1 }
     end
 end
@@ -108,7 +108,7 @@ control 'cis-password-settings-password-length-18.2.5' do
 
     only_if { file('C:\Windows\PolicyDefinitions\AdmPwd.admx').file? }
 
-    describe registry_key('HKLM\SOFTWARE\Policies\Microsoft\Services\AdmPwd') do
+    describe registry_key('HKLM\SOFTWARE\Policies\Microsoft Services\AdmPwd') do
         its('PasswordLength') { should eq 1 }
     end
 end
@@ -125,7 +125,7 @@ control 'cis-password-settings-password-age-18.2.6' do
 
     only_if { file('C:\Windows\PolicyDefinitions\AdmPwd.admx').file? }
 
-    describe registry_key('HKLM\SOFTWARE\Policies\Microsoft\Services\AdmPwd') do
+    describe registry_key('HKLM\SOFTWARE\Policies\Microsoft Services\AdmPwd') do
         its('PasswordAgeDays') { should eq 1 }
     end
 end
